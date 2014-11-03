@@ -2355,7 +2355,7 @@ static int mass_storage_function_init(struct android_usb_function *f,
 	name[0] = "lun";
 
 #ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
-	config->fsg.luns[0].cdrom = 1;
+	config->fsg.luns[0].cdrom = 0;
 	config->fsg.luns[0].ro = 0;
 	config->fsg.luns[0].removable = 1;
 #else
