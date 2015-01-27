@@ -841,13 +841,6 @@ on nonencrypted
 on charger
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system wait ro
 
-    mkdir /carrier 0744 system system
-    wait /dev/block/platform/msm_sdcc.1/by-name/carrier
-    check_fs /dev/block/platform/msm_sdcc.1/by-name/carrier ext4
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/carrier /carrier nosuid nodev barrier=1
-    chown system system /carrier
-    chmod 0744 /carrier
-
     class_start charger
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
