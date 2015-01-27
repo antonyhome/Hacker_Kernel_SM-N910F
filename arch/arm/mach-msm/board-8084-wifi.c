@@ -35,23 +35,26 @@
 #define PREALLOC_WLAN_BUF_NUM		160
 #define PREALLOC_WLAN_SECTION_HEADER	24
 
-#define DHD_SKB_HDRSIZE			336
-#define DHD_SKB_1PAGE_BUFSIZE	((PAGE_SIZE*1)-DHD_SKB_HDRSIZE)
-#define DHD_SKB_2PAGE_BUFSIZE	((PAGE_SIZE*2)-DHD_SKB_HDRSIZE)
-#define DHD_SKB_4PAGE_BUFSIZE	((PAGE_SIZE*4)-DHD_SKB_HDRSIZE)
 
 #ifdef CONFIG_BCMDHD_PCIE
+#define DHD_SKB_1PAGE_BUFSIZE	(PAGE_SIZE*1)
+#define DHD_SKB_2PAGE_BUFSIZE	(PAGE_SIZE*2)
+#define DHD_SKB_4PAGE_BUFSIZE	(PAGE_SIZE*4)
+
 #define WLAN_SECTION_SIZE_0	(PREALLOC_WLAN_BUF_NUM * 128)
 #define WLAN_SECTION_SIZE_1	0
 #define WLAN_SECTION_SIZE_2	0
 #define WLAN_SECTION_SIZE_3	(PREALLOC_WLAN_BUF_NUM * 1024)
 
-#define DHD_SKB_1PAGE_RESERVED_BUF_NUM  4
-#define DHD_SKB_1PAGE_BUF_NUM	((32) + (DHD_SKB_1PAGE_RESERVED_BUF_NUM))
-#define DHD_SKB_2PAGE_BUF_NUM	0
+#define DHD_SKB_1PAGE_BUF_NUM	0
+#define DHD_SKB_2PAGE_BUF_NUM	16
 #define DHD_SKB_4PAGE_BUF_NUM	0
 
 #else
+#define DHD_SKB_HDRSIZE			336
+#define DHD_SKB_1PAGE_BUFSIZE	((PAGE_SIZE*1)-DHD_SKB_HDRSIZE)
+#define DHD_SKB_2PAGE_BUFSIZE	((PAGE_SIZE*2)-DHD_SKB_HDRSIZE)
+#define DHD_SKB_4PAGE_BUFSIZE	((PAGE_SIZE*4)-DHD_SKB_HDRSIZE)
 
 #define WLAN_SECTION_SIZE_0	(PREALLOC_WLAN_BUF_NUM * 128)
 #define WLAN_SECTION_SIZE_1	(PREALLOC_WLAN_BUF_NUM * 128)
@@ -179,13 +182,13 @@ static int brcm_init_wlan_mem(void)
 			goto err_skb_alloc;
 	}
 
-#if !defined(CONFIG_BCMDHD_PCIE)
 	for (i = DHD_SKB_1PAGE_BUF_NUM; i < WLAN_SKB_1_2PAGE_BUF_NUM; i++) {
 		wlan_static_skb[i] = dev_alloc_skb(DHD_SKB_2PAGE_BUFSIZE);
 		if (!wlan_static_skb[i])
 			goto err_skb_alloc;
 	}
 
+#if !defined(CONFIG_BCMDHD_PCIE)
 	wlan_static_skb[i] = dev_alloc_skb(DHD_SKB_4PAGE_BUFSIZE);
 	if (!wlan_static_skb[i])
 		goto err_skb_alloc;
@@ -241,7 +244,6 @@ static int brcm_init_wlan_mem(void)
 	}
 #endif /* CONFIG_BCMDHD_PCIE */
 
-#ifdef CONFIG_BCMDHD_DEBUG_PAGEALLOC
 	wlan_static_dhd_memdump_buf = kmalloc(WLAN_DHD_MEMDUMP_SIZE, GFP_KERNEL | __GFP_ZERO);
 	if (!wlan_static_dhd_memdump_buf) {
 		pr_err("Failed to alloc wlan_static_dhd_memdump_buf\n");
@@ -253,19 +255,16 @@ static int brcm_init_wlan_mem(void)
 		pr_err("Failed to alloc wlan_static_dhd_memdump_ram\n");
 		goto err_mem_alloc;
 	}
-#endif /* CONFIG_BCMDHD_DEBUG_PAGEALLOC */
 
 	printk(KERN_INFO"%s: WIFI MEM Allocated\n", __func__);
 	return 0;
 
 err_mem_alloc:
-#ifdef CONFIG_BCMDHD_DEBUG_PAGEALLOC
 	if (wlan_static_dhd_memdump_ram)
 		kfree(wlan_static_dhd_memdump_ram);
 		
 	if (wlan_static_dhd_memdump_buf)
 		kfree(wlan_static_dhd_memdump_buf);
-#endif /* CONFIG_BCMDHD_DEBUG_PAGEALLOC */		
 
 #ifdef CONFIG_BCMDHD_PCIE
 	for (j = 0; j < WLAN_FLOWRING_NUM; j++) {

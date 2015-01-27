@@ -24,7 +24,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: dhd.h 501162 2014-09-08 03:52:30Z $
+ * $Id: dhd.h 512298 2014-11-03 08:30:08Z $
  */
 
 /****************
@@ -120,6 +120,12 @@ enum dhd_op_flags {
 #ifndef MAX_CNTL_RX_TIMEOUT
 #define MAX_CNTL_RX_TIMEOUT 1
 #endif /* MAX_CNTL_RX_TIMEOUT */
+
+#ifdef BCMPCIE
+#ifndef MAX_CNTL_D3ACK_TIMEOUT
+#define MAX_CNTL_D3ACK_TIMEOUT 2
+#endif /* MAX_CNTL_D3ACK_TIMEOUT */
+#endif /* BCMPCIE */
 
 #define DHD_SCAN_ASSOC_ACTIVE_TIME	40 /* ms: Embedded default Active setting from DHD */
 #define DHD_SCAN_UNASSOC_ACTIVE_TIME 80 /* ms: Embedded def. Unassoc Active setting from DHD */
@@ -357,6 +363,9 @@ typedef struct dhd_pub {
 	int   hang_was_sent;
 	int   rxcnt_timeout;		/* counter rxcnt timeout to send HANG */
 	int   txcnt_timeout;		/* counter txcnt timeout to send HANG */
+#ifdef BCMPCIE
+	int   d3ackcnt_timeout;		/* counter d3ack timeout to send HANG */
+#endif /* BCMPCIE */
 	bool hang_report;		/* enable hang report by default */
 #ifdef WLMEDIA_HTSF
 	uint8 htsfdlystat_sz; /* Size of delay stats, max 255B */

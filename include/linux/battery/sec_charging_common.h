@@ -535,6 +535,7 @@ struct sec_battery_platform_data {
 	 * only for scaling
 	 */
 	int capacity_max;
+	int capacity_max_hv;
 	int capacity_max_margin;
 	int capacity_min;
 	int rcomp0;

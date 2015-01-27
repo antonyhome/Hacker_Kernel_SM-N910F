@@ -1781,9 +1781,16 @@ struct net_device *gether_connect(struct gether *link)
 				link->close(link);
 		}
 		spin_unlock(&dev->lock);
-
+#ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
+		if (!dev->port_usb->is_fixed) {
+			printk(KERN_INFO "usb: %s netif carrier on", __func__);
+#endif
 		netif_carrier_on(dev->net);
-
+#ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
+		} else {
+			printk(KERN_INFO "usb: %s in ncm case - no netif carrier ", __func__);
+		}
+#endif
 		wait_for_rx_trigger = dev->rx_trigger_enabled &&
 			!link->rx_triggered;
 

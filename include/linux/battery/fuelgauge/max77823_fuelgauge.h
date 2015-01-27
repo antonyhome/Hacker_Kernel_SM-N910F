@@ -68,6 +68,7 @@
 #define SOCAV_REG				0x0E
 #define REMCAP_MIX_REG			0x0F
 #define FULLCAP_REG				0x10
+#define FULLSOCTHR_REG			0x13
 #define TIME_TO_EMPTY_REG		0x11
 #define FULLCAPREP_REG			0x35
 #define RFAST_REG				0x15
@@ -77,6 +78,7 @@
 #define AVR_VCELL_REG			0x19
 #define TIME_TO_FULL_REG		0x20
 #define CONFIG_REG				0x1D
+#define ICHGTERM_REG			0x1E
 #define REMCAP_AV_REG			0x1F
 #define FULLCAP_NOM_REG		0x23
 #define MISCCFG_REG				0x2B
@@ -135,6 +137,12 @@ struct max77823_fuelgauge_battery_data_t {
 	s32 low_battery_table[CURRENT_RANGE_MAX_NUM][TABLE_MAX];
 	s32 temp_adjust_table[TEMP_RANGE_MAX_NUM][TABLE_MAX];
 	u8	*type_str;
+	u32 ichgterm;
+	u32 misccfg;
+	u32 fullsocthr;
+	u32 ichgterm_2nd;
+	u32 misccfg_2nd;
+	u32 fullsocthr_2nd;
 };
 
 struct max77823_fuelgauge_info {
@@ -215,6 +223,8 @@ struct max77823_fuelgauge_data {
 	/* register programming */
 	int reg_addr;
 	u8 reg_data[2];
+
+	unsigned int pre_soc;
 
 	int fg_irq;
 };

@@ -24,7 +24,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: bcmmsgbuf.h 501099 2014-09-07 02:24:42Z $
+ * $Id: bcmmsgbuf.h 509367 2014-10-20 12:43:00Z $
  */
 #ifndef _bcmmsgbuf_h_
 #define	_bcmmsgbuf_h_

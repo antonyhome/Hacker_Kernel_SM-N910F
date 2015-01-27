@@ -611,10 +611,7 @@ static void afc_detect_work(struct work_struct *work)
 
 	charger->afc_detect = false;
 	if (charger->siop_level < 100) {
-		cur = charger->pdata->charging_current[
-			POWER_SUPPLY_TYPE_MAINS].input_current_limit * charger->siop_level / 100;
-		if (cur > SIOP_INPUT_LIMIT_CURRENT)
-			cur = SIOP_INPUT_LIMIT_CURRENT;
+		cur = SIOP_INPUT_LIMIT_CURRENT;
 	} else {
 		cur = charger->pdata->charging_current[
 			POWER_SUPPLY_TYPE_MAINS].input_current_limit;

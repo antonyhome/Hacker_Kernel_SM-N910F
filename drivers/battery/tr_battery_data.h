@@ -26,8 +26,8 @@ static struct max77823_fuelgauge_battery_data_t max77823_battery_data[] = {
 #if defined(CONFIG_SEC_TRLTE_CHNDUOS)
 		.rcomp0 = 0x0038,
 		.rcomp_charging = 0x0038,
-		.QResidual20 = 0x1E07,
-		.QResidual30 = 0x1408,
+		.QResidual20 = 0x1007,
+		.QResidual30 = 0x0B08,
 		.Capacity = 0x16E3, /* TR CHN: 2929mAh */
 #else
 		.rcomp0 = 0x0063,

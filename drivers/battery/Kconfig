@@ -336,3 +336,9 @@ config SAMSUNG_BATTERY_DISALLOW_DEEP_SLEEP
 	help
 	  Say Y to include support
 	  Disallow deep sleep during charging for stablity.
+
+config EN_OOPS
+	bool "enable oops filter"
+	default n
+	help
+	  Say Y to enable oops filter

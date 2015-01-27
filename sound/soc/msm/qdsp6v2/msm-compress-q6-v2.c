@@ -1034,6 +1034,7 @@ static int msm_compr_drain_buffer(struct msm_compr_audio *prtd,
 
 	atomic_set(&prtd->drain, 1);
 	prtd->drain_ready = 0;
+	prtd->cmd_interrupt = 0;
 	spin_unlock_irqrestore(&prtd->lock, *flags);
 	pr_info("%s: wait for buffer to be drained\n",  __func__);
 	rc = wait_event_interruptible(prtd->drain_wait,
@@ -1344,9 +1345,8 @@ static int msm_compr_trigger(struct snd_compr_stream *cstream, int cmd)
 		prtd->cmd_ack = 0;
 		atomic_set(&prtd->eos, 1);
 		q6asm_stream_cmd_nowait(ac, CMD_EOS, ac->stream_id);
-
+		prtd->cmd_interrupt = 0;
 		spin_unlock_irqrestore(&prtd->lock, flags);
-
 
 		/* Wait indefinitely for  DRAIN. Flush can also signal this*/
 		rc = wait_event_interruptible(prtd->eos_wait,

@@ -1792,5 +1792,9 @@ config SEC_THERMISTOR
         default n
         help
         Use thermistor driver for checking temperature near AP chip.
-        
+
+config SAMSUNG_PRODUCT_SHIP
+        bool "set up for product shipping"
+        default n
+
 endif
