@@ -8,10 +8,13 @@ TOOLCHAIN_DIR=/home/thehacker911/android/toolchains
 # Toolchains
 
 #Sabermod
-BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.10-sm/bin/arm-eabi-
+#BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/sm-arm-eabi-5.0/bin/arm-eabi-
+#BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/sm-arm-eabi-4.10-hrt/bin/arm-eabi-
+#BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.10-sm/bin/arm-eabi-
 #BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.9.1-sm/bin/arm-eabi-
 
 #Linaro
+BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/arm-linux-gnueabi-linaro_4.9.3/bin/arm-eabi-
 #BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.9.1/bin/arm-gnueabi-
 #BUILD_CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.8.3/bin/arm-gnueabi-
 
