@@ -30,6 +30,8 @@ on early-init
 on init
     ffu
 
+setenforce 0
+setprop ro.boot.selinux 0
 sysclktz 0
 
 loglevel 3
@@ -223,7 +225,7 @@ on post-fs
 
 on post-fs-data
     # Reload SE Android Policy
-    setprop selinux.reload_policy 1
+    setprop selinux.reload_policy 0
 
     # We chown/chmod /data again so because mount is run as root + defaults
     chown system system /data
@@ -839,6 +841,13 @@ on nonencrypted
 on charger
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system wait ro
 
+    mkdir /carrier 0744 system system
+    wait /dev/block/platform/msm_sdcc.1/by-name/carrier
+    check_fs /dev/block/platform/msm_sdcc.1/by-name/carrier ext4
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/carrier /carrier nosuid nodev barrier=1
+    chown system system /carrier
+    chmod 0744 /carrier
+
     class_start charger
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
@@ -931,10 +940,10 @@ service healthd-charger /sbin/healthd -n
     seclabel u:r:healthd:s0
 
 # Reload SE Android Policy for MDM
-on property:persist.security.mdm.policy=1
-    setprop selinux.reload_policy 1
+on property:persist.security.mdm.policy=0
+    setprop selinux.reload_policy 0
 
-on property:selinux.reload_policy=1
+on property:selinux.reload_policy=0
     chown system system /sys/fs/selinux/enforce
     chown -R system system /sys/fs/selinux/booleans
     chown system system /sys/fs/selinux/commit_pending_bools
@@ -1255,3 +1264,16 @@ service charon /system/bin/charon
     group vpn net_admin inet
     disabled
     oneshot
+
+# init.d support enabler
+service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+     class late_start
+     user root
+     group shell
+     oneshot
+
+# Call Post-init script
+service post-init /sbin/ext/post-init.sh
+    	class core
+    	user root
+    	oneshot
