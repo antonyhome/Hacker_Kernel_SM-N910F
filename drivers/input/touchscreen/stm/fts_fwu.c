@@ -224,36 +224,9 @@ static void fts_enable_custom_library(struct fts_ts_info *info)
 {
 	unsigned char EnableCLIB[4] = {0xB0, 0x01, 0x10, 0x77};
 
-#ifdef CONFIG_SEC_TBLTE_PROJECT
-	EnableCLIB[3] =  0x7D;
-#endif
 	tsp_debug_info(true, info->dev, "%s\n", __func__);
 
 	info->fts_write_reg(info, &EnableCLIB[0], 4);
-}
-static void fts_check_custom_library(struct fts_ts_info *info)
-{
-	int rc;
-	unsigned char regAdd[3] = {0xd0, 0x00, 0x50};
-	unsigned char buf[3];
-	unsigned char ver=0;
-
-	rc = info->fts_read_reg(info, regAdd, 3, buf, 2);
-	//ver=buf[0]; // S LTE
-	ver=buf[1];	// T LTE
-
-	tsp_debug_info(true, info->dev, "%s, CHN on =%d\n", __func__, ver);
-
-	if (rc < 0) {
-		tsp_debug_info(true, info->dev, "%s, read fail,%d\n", __func__, rc);
-	}else if (ver==0) {
-		fts_enable_custom_library(info);
-		info->fts_command(info, FTS_CMD_SAVE_FWCONFIG);
-		msleep(300);
-
-		info->fts_systemreset(info);
-		info->fts_wait_for_ready(info);
-	}
 }
 #endif
 
