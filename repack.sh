@@ -1,7 +1,7 @@
 #!/bin/bash
 # kernel repack script by thehacker911
 
-KERNEL_NAME=hacker_kernel_sm-n910f_v2.1
+KERNEL_NAME=hacker_kernel_sm-n910f_v3
 KERNEL_DIR=/home/thehacker911/android/kernel/note4
 BUILD_USER="$USER"
 REPACK_DIR=kernel_packer
@@ -33,7 +33,7 @@ REPACK_KERNEL()
 	zip -r $KERNEL_NAME.zip META-INF system boot.img
         mv $KERNEL_NAME.zip $OUTPUT_DIR
 	cd ../
-	#rm -rf $KERNEL_NAME	
+	rm -rf $KERNEL_NAME	
 
 	echo ""
 	echo "=============================================="
