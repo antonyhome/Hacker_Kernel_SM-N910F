@@ -5,6 +5,7 @@ ui_print("");
 ui_print("Mounting /system.....");
 run_program("/sbin/busybox", "mount", "/system");
 
+ui_print("Cleaning.....");
 delete("/data/dalvik-cache/data@app@com.af.synapse-1.apk@classes.dex");
 delete("/data/dalvik-cache/data@app@com.af.synapse-2.apk@classes.dex");
 delete("/data/dalvik-cache/data@app@com.af.synapse-3.apk@classes.dex");
